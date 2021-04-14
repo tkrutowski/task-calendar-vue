@@ -7,35 +7,60 @@
             <b-container id="dateSwitch">
                 <b-row align-h="center">
                     <b-button class="mr-3" @click="prevDate">Poprzednia</b-button>
-                    <h3>{{startDate.format('D')}} - {{endDate.format('D.MM.YYYY')}}</h3>
+                    <h3>{{startDate.format('D.MM')}} - {{endDate.format('D.MM.YYYY')}}</h3>
                     <b-button class="ml-3" @click="nextDate">Następna</b-button>
                 </b-row>
             </b-container>
 
+            <ul v-if="errors && errors.length">
+                <li v-for="error of errors" :key="error.ruleId">
+                    {{error.message}}
+                </li>
+            </ul>
             <br>
             <br>
             <br>
-            <div>
-                <b-btn v-b-toggle="'team1'">TEAM 1</b-btn>
+            <div v-for="team in allTeams" :key="team.idTeam">
+                <br>
+                <b-btn v-b-toggle="'team'+team.idTeam">{{team.name}}</b-btn>
 
-                <b-collapse id="team1">
+                <b-collapse :id="'team'+team.idTeam" visible>
                     <b-card>
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-2 odd">
                                     <p>Poniedziałek - {{monday}}</p>
 
-                                    <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
-                                        <div v-if="weekDay(calendarEntry.date) === 'Monday'">
-                                            <GasConnectionCalendarEntry
-                                                    :address="calendarEntry.address"
-                                                    :cabinet="calendarEntry.gasCabinetProvider"
-                                                    :msg="calendarEntry.message"
-                                                    :task-no="calendarEntry.taskNo"/>
-                                            <!--                                {{weekDay(calendarEntry.date)}}-->
-                                            <!--                                    {{ moment(calendarEntry.date).format('dddd')}}-->
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'poniedziałek'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
+
+                                                        <!--                                                    <GasConnectionCalendarEntry-->
+                                                        <!--                                                            :address="calendarEntry.address"-->
+                                                        <!--                                                            :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                            :msg="calendarEntry.message"-->
+                                                        <!--                                                            :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                            :mail-status-customer="calendarEntry.sentMailToCustomer"-->
+                                                        <!--                                                            :mail-customer-date="calendarEntry.dateSentMailToCustomer"-->
+                                                        <!--                                                            :mail-status-surveyor="calendarEntry.sentMailToSurveyor"-->
+                                                        <!--                                                            :mail-status-pgn="calendarEntry.sentMailPgn"-->
+                                                        <!--                                                            :mail-surveyor-date="dateSentMailToSurveyor"-->
+                                                        <!--                                                            :mail-pgn-date="dateSentMailPgn"-->
+                                                        <!--                                                            :is-pgn="calendarEntry.isPgn"-->
+                                                        <!--                                                    />-->
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--                                {{calendarEntry.date.getUTCDay()}}-->
                                         </div>
-                                        <!--                                {{calendarEntry.date.getUTCDay()}}-->
                                     </div>
                                 </div>
                                 <div class="col-2 even">
@@ -48,7 +73,7 @@
                                 </div>
                                 <div class="col-2 even">
                                     <p>Czwartek - {{thursday}}</p>
-                                    <GasConnectionCalendarEntry/>
+                                    <!--                                    <GasConnectionCalendarEntry/>-->
                                 </div>
                                 <div class="col-2 odd">
                                     <p>Piątek - {{friday}}</p>
@@ -74,8 +99,9 @@
                             </div>
                         </div>
                     </b-card>
-                </b-collapse>
 
+                </b-collapse>
+                <br>
             </div>
         </b-container>
     </div>
@@ -95,7 +121,9 @@
             return {
                 calendarEntries: [],
                 errors: [],
-                startDate: '',
+                allTeams: [],
+                teams: new Set,
+                startDate: moment(),
                 endDate: '',
                 monday: '',
                 tuesday: '',
@@ -112,18 +140,52 @@
             this.calculateStartDate();
             this.calculateEndDate();
             this.fillWeekDays();
+            this.getTeamsFromDb();
             this.getFromDb();
+
         },
         methods: {
-            getFromDb(){
+            getFromDb() {
+                console.log("getEntryFromDb() - start");
                 axios.get(`http://localhost:8080/api/taskcalendar/week?date=` + this.startDate.format('YYYY-MM-DD'))
                     .then(response => {
                         // JSON responses are automatically parsed.
-                        this.calendarEntries = response.data
+                        this.calendarEntries = response.data;
+                        console.log("getTaskEntriesFromDb() - Ilosc entries[]: " + this.calendarEntries.length);
+                        //this.getTeams();
                     })
                     .catch(e => {
                         this.errors.push(e)
+                    });
+
+            },
+            getTeamsFromDb() {
+                console.log("getTeamsFromDb() - start");
+                axios.get(`http://localhost:8082/api/teams`)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        this.allTeams = response.data;
+                        console.log("getTeamsFromDb() - Ilosc teams[]: " + this.allTeams.length);
                     })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+
+            },
+            getTeams() {
+                console.log("getTeams()");
+                this.teams.clear();
+                console.log("Ilosc teams[]: " + this.allTeams.length);
+
+                if (this.calendarEntries.length > 0) {
+                    this.calendarEntries.forEach(e => {
+                        this.teams.add(e.idTeam)
+                    })
+                    this.calendarEntries.forEach(e => console.log("ID team: " + e.idTeam));
+                    console.log("Teams set: " + this.teams);
+
+                }
+
             },
             prevDate() {
                 console.log("Preview date.")
@@ -132,6 +194,7 @@
                 this.calculateEndDate()
                 this.fillWeekDays();
                 this.getFromDb();
+                // this.getTeams();
             },
             nextDate() {
                 console.log("Next date.")
@@ -140,6 +203,7 @@
                 this.calculateEndDate()
                 this.fillWeekDays();
                 this.getFromDb();
+                // this.getTeams();
             },
             calculateEndDate() {
                 console.log("Calculate end date")
@@ -162,7 +226,7 @@
                 switch (given) {
                     case "poniedziałek":
                         console.log("jestem w pon")
-                        this.startDate = moment().format('YYYY-MM-DD')
+                        this.startDate = moment()
                         break;
                     case "wtorek":
                         console.log("jestem w wt")
