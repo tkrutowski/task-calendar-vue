@@ -20,9 +20,17 @@
             <b-collapse visible id="collapse-3">
                 <b-card no-body style="color: black; padding: .30rem" >
                         Powiadomienia:
-                    <div  v-b-modal.my-modal id="customer" class="notification " :style="checkCustomer() ? {'background-color':'green'} :{'background-color':'red'} ">
-                        <h6>Klient: </h6><h6>2015-04-15</h6>
+                    <div  v-b-modal="'customer'+taskNo" id="customer" class="notification " :style="checkCustomer() ? {'background-color':'green'} :{'background-color':'red'} ">
+                        <h6>Klient: </h6><h6>{{mailCustomerDate}}</h6>
                     </div>
+
+
+<!--                    <div  v-b-modal.my-modal id="customer" class="notification " :style="checkCustomer() ? {'background-color':'green'} :{'background-color':'red'} ">-->
+<!--                        <h6>Klient: </h6><h6>2015-04-15</h6>-->
+<!--                    </div>-->
+
+
+
                     <div id="surveyor" class="notification " :style="checkSurveyor() ? {'background-color':'green'} :{'background-color':'red'} ">
                         <h6>Geodeda: </h6><h6>2015-04-19</h6>
                     </div>
@@ -34,13 +42,28 @@
 
 
             <!-- The modal -->
-            <b-modal id="my-modal">Hello From My Modal!{{taskNo}}</b-modal>
+            <b-modal :id="'customer'+taskNo" centered title="Powiadomienie klienta"
+            @show="resetIfNullCustomer"
+            @ok="assignValueCustomer">
+                <p class="my-4">Wybierz datę powiadomienia klienta: Nr zadania: {{taskNo}}</p>
+                <div>
+                    <b-calendar v-model="tempDate"  locale="pl" block></b-calendar>
+                </div>
+                <div id="modalWindow">
+                    <b-button variant="danger" @click="clearModalCustomer">Wyczyść</b-button>
+                </div>
+            </b-modal>
+            <user-modal title="User Modal" text="Testing Bootstrap Modal" />
         </div>
     </div>
 </template>
 
 <script>
+    import UserModal from "@/components/UserModal";
     export default {
+        components: {
+            UserModal
+        },
         name: "GasConnectionCalendarEntry",
         props: {
 
@@ -55,7 +78,8 @@
             // isSurveyorMailSend: Boolean,
             mailSurveyorDate: String,
             mailPgnDate: String,
-            isPgn: Boolean
+            isPgn: Boolean,
+            tempDate: String
         },
         methods:{
             checkCustomer(){
@@ -78,8 +102,19 @@
                     isMail=true;
                 }
                 return isMail;
-            }
+            },
+            resetIfNullCustomer() {
+                this.tempDate = this.mailCustomerDate
+                // this.nameState = null
+            },
+            assignValueCustomer() {
+                this.mailCustomerDate = this.tempDate
+                this.tempDate != '' ? this.mailStatusCustomer = "SENT" :  this.mailStatusCustomer = ''
+            },
+            clearModalCustomer() {
+                this.tempDate = ''
 
+            }
         }
     }
 </script>
@@ -113,6 +148,13 @@
     }
     #cabinet{
         text-align: left;
+    }
 
+    #modalWindow{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+        /*align-content: center;*/
     }
 </style>

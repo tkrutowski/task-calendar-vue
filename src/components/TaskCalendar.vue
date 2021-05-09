@@ -37,25 +37,25 @@
                                                 <div v-if="calendarEntry.idTeam === team.idTeam">
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
-                                                        <!--                                                    <GasConnectionCalendarEntry-->
-                                                        <!--                                                            :address="calendarEntry.address"-->
-                                                        <!--                                                            :cabinet="calendarEntry.gasCabinetProvider"-->
-                                                        <!--                                                            :msg="calendarEntry.message"-->
-                                                        <!--                                                            :task-no="calendarEntry.taskNo"-->
-                                                        <!--                                                            :mail-status-customer="calendarEntry.sentMailToCustomer"-->
-                                                        <!--                                                            :mail-customer-date="calendarEntry.dateSentMailToCustomer"-->
-                                                        <!--                                                            :mail-status-surveyor="calendarEntry.sentMailToSurveyor"-->
-                                                        <!--                                                            :mail-status-pgn="calendarEntry.sentMailPgn"-->
-                                                        <!--                                                            :mail-surveyor-date="dateSentMailToSurveyor"-->
-                                                        <!--                                                            :mail-pgn-date="dateSentMailPgn"-->
-                                                        <!--                                                            :is-pgn="calendarEntry.isPgn"-->
-                                                        <!--                                                    />-->
-                                                        <GasConnectionCalendarEntry
-                                                                :address="calendarEntry.address"
-                                                                :cabinet="calendarEntry.gasCabinetProvider"
-                                                                :msg="calendarEntry.message"
-                                                                :task-no="calendarEntry.taskNo"
-                                                        />
+                                                                                                            <GasConnectionCalendarEntry
+                                                                                                                    :address="calendarEntry.address"
+                                                                                                                    :cabinet="calendarEntry.gasCabinetProvider"
+                                                                                                                    :msg="calendarEntry.message"
+                                                                                                                    :task-no="calendarEntry.taskNo"
+                                                                                                                    :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                                                                    :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                                                                    :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                                                                    :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                                                                    :mail-surveyor-date="dateSentMailToSurveyor"
+                                                                                                                    :mail-pgn-date="dateSentMailPgn"
+                                                                                                                    :is-pgn="calendarEntry.isPgn"
+                                                                                                            />
+<!--                                                        <GasConnectionCalendarEntry-->
+<!--                                                                :address="calendarEntry.address"-->
+<!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+<!--                                                                :msg="calendarEntry.message"-->
+<!--                                                                :task-no="calendarEntry.taskNo"-->
+<!--                                                        />-->
                                                     </div>
                                                 </div>
                                             </div>
