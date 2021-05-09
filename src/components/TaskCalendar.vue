@@ -37,63 +37,195 @@
                                                 <div v-if="calendarEntry.idTeam === team.idTeam">
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
-                                                                                                            <GasConnectionCalendarEntry
-                                                                                                                    :address="calendarEntry.address"
-                                                                                                                    :cabinet="calendarEntry.gasCabinetProvider"
-                                                                                                                    :msg="calendarEntry.message"
-                                                                                                                    :task-no="calendarEntry.taskNo"
-                                                                                                                    :mail-status-customer="calendarEntry.sentMailToCustomer"
-                                                                                                                    :mail-customer-date="calendarEntry.dateSentMailToCustomer"
-                                                                                                                    :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
-                                                                                                                    :mail-status-pgn="calendarEntry.sentMailPgn"
-                                                                                                                    :mail-surveyor-date="dateSentMailToSurveyor"
-                                                                                                                    :mail-pgn-date="dateSentMailPgn"
-                                                                                                                    :is-pgn="calendarEntry.isPgn"
-                                                                                                            />
-<!--                                                        <GasConnectionCalendarEntry-->
-<!--                                                                :address="calendarEntry.address"-->
-<!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
-<!--                                                                :msg="calendarEntry.message"-->
-<!--                                                                :task-no="calendarEntry.taskNo"-->
-<!--                                                        />-->
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--                                {{calendarEntry.date.getUTCDay()}}-->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2 even">
                                     <p>Wtorek - {{tuesday}}</p>
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'wtorek'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-2 odd">
-                                    <p>Sroda - {{wednesday}}</p>
+                                    <p>Środa - {{wednesday}}</p>
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'środa'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-2 even">
                                     <p>Czwartek - {{thursday}}</p>
-                                    <!--                                    <GasConnectionCalendarEntry/>-->
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'czwartek'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
+
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-2 odd">
                                     <p>Piątek - {{friday}}</p>
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'piątek'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
-                                    <!--                            <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">-->
-                                    <!--                                <div v-if="weekDay(calendarEntry.date) === 'Friday'">-->
-                                    <!--                                    <GasConnectionCalendarEntry-->
-                                    <!--                                            :address="calendarEntry.address"-->
-                                    <!--                                            :cabinet="calendarEntry.gasCabinetProvider"-->
-                                    <!--                                            :msg="calendarEntry.message"-->
-                                    <!--                                            :task-no="calendarEntry.taskNo"/>-->
-                                    <!--&lt;!&ndash;                                    {{weekDay(calendarEntry.date)}}&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                    {{calendarEntry.date || moment().format('dddd')}}&ndash;&gt;-->
-                                    <!--                                </div>-->
-                                    <!--                                &lt;!&ndash;                                {{calendarEntry.date.getUTCDay()}}&ndash;&gt;-->
-                                    <!--                            </div>-->
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-2 even">
                                     <p>Sobota - {{saturday}}</p>
+                                    <div v-if="calendarEntries && calendarEntries.length">
+                                        <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
+                                            <div v-if="weekDay(calendarEntry.date) === 'sobota'">
+                                                <div v-if="calendarEntry.idTeam === team.idTeam">
+                                                    <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
+                                                        <GasConnectionCalendarEntry
+                                                                :address="calendarEntry.address"
+                                                                :cabinet="calendarEntry.gasCabinetProvider"
+                                                                :msg="calendarEntry.message"
+                                                                :task-no="calendarEntry.taskNo"
+                                                                :mail-status-customer="calendarEntry.sentMailToCustomer"
+                                                                :mail-customer-date="calendarEntry.dateSentMailToCustomer"
+                                                                :mail-status-surveyor="calendarEntry.sentMailToSurveyor"
+                                                                :mail-status-pgn="calendarEntry.sentMailPgn"
+                                                                :mail-surveyor-date="calendarEntry.dateSentMailToSurveyor"
+                                                                :mail-pgn-date="calendarEntry.dateSentMailPgn"
+                                                                :is-pgn="calendarEntry.isPgn"
+                                                        />
+                                                        <!--                                                        <GasConnectionCalendarEntry-->
+                                                        <!--                                                                :address="calendarEntry.address"-->
+                                                        <!--                                                                :cabinet="calendarEntry.gasCabinetProvider"-->
+                                                        <!--                                                                :msg="calendarEntry.message"-->
+                                                        <!--                                                                :task-no="calendarEntry.taskNo"-->
+                                                        <!--                                                        />-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
