@@ -13,7 +13,7 @@
 <!--            <b-button v-b-toggle.collapse-3 class="m-1">...</b-button>-->
         </div>
         <div id="msg">
-            <b-form-textarea  class="form-control" rows="3" v-bind:value="msg" readonly></b-form-textarea>
+            <b-form-textarea v-b-modal="'info'+taskNo" class="form-control" rows="3" v-bind:value="msg" readonly></b-form-textarea>
         </div>
         <div>
             <b-button v-b-toggle.collapse-3 class="m-1">...</b-button>
@@ -31,7 +31,7 @@
 
 
 
-                    <div id="surveyor" class="notification " :style="checkSurveyor() ? {'background-color':'green'} :{'background-color':'red'} ">
+                    <div v-b-modal="'surveyor'+taskNo" id="surveyor" class="notification " :style="checkSurveyor() ? {'background-color':'green'} :{'background-color':'red'} ">
                         <h6>Geodeda: </h6><h6>2015-04-19</h6>
                     </div>
                     <div v-if="isPgn" id="pgn" class="notification " :style="checkPgn() ? {'background-color':'green'} :{'background-color':'red'} ">
@@ -41,28 +41,46 @@
             </b-collapse>
 
 
-            <!-- The modal -->
+            <!-- The modal  customer-->
             <b-modal :id="'customer'+taskNo" centered title="Powiadomienie klienta"
-            @show="resetIfNullCustomer"
-            @ok="assignValueCustomer">
-                <p class="my-4">Wybierz datę powiadomienia klienta: Nr zadania: {{taskNo}}</p>
+                     @show="resetIfNullCustomer"
+                     @ok="assignValueCustomer">
+                <p class="my-6">Wybierz datę powiadomienia klienta</p>
                 <div>
                     <b-calendar v-model="tempDate"  locale="pl" block></b-calendar>
                 </div>
-                <div id="modalWindow">
+                <div class="modalWindow">
                     <b-button variant="danger" @click="clearModalCustomer">Wyczyść</b-button>
                 </div>
             </b-modal>
-            <user-modal title="User Modal" text="Testing Bootstrap Modal" />
+
+            <!-- The modal  surveyor-->
+            <b-modal :id="'surveyor'+taskNo" centered title="Powiadomienie geodety"
+                     @show="resetIfNullSurveyor"
+                     @ok="assignValueSurveyor">
+                <p class="my-6">Wybierz datę powiadomienia geodety</p>
+                <div>
+                    <b-calendar v-model="tempDate"  locale="pl" block></b-calendar>
+                </div>
+                <div class="modalWindow">
+                    <b-button variant="danger" @click="clearModalSurveyor">Wyczyść</b-button>
+                </div>
+            </b-modal>
+
+            <!-- The modal  info-->
+            <b-modal :id="'info'+taskNo" centered title="Informacje"
+                     @show="copyToInfo"
+                     @ok="assignValueInfo">
+                    <b-textarea id="input-info" v-model="tempInfo"  rows="6" locale="pl" ></b-textarea>
+            </b-modal>
+
         </div>
     </div>
 </template>
 
 <script>
-    import UserModal from "@/components/UserModal";
     export default {
         components: {
-            UserModal
         },
         name: "GasConnectionCalendarEntry",
         props: {
@@ -79,7 +97,8 @@
             mailSurveyorDate: String,
             mailPgnDate: String,
             isPgn: Boolean,
-            tempDate: String
+            tempDate: String,
+            tempInfo: String
         },
         methods:{
             checkCustomer(){
@@ -103,6 +122,7 @@
                 }
                 return isMail;
             },
+            //CUSTOMER
             resetIfNullCustomer() {
                 this.tempDate = this.mailCustomerDate
                 // this.nameState = null
@@ -114,7 +134,26 @@
             clearModalCustomer() {
                 this.tempDate = ''
 
-            }
+            },
+            //INFO MODAL
+            copyToInfo() {
+                this.tempInfo = this.msg
+            },
+            assignValueInfo() {
+                this.msg = this.tempInfo
+            },
+            //SURVEYOR
+            resetIfNullSurveyor() {
+                this.tempDate = this.mailSurveyorDate
+            },
+            assignValueSurveyor() {
+                this.mailSurveyorDate = this.tempDate
+                this.tempDate != '' ? this.mailStatusSurveyor = "SENT" :  this.mailStatusSurveyor = ''
+            },
+            clearModalSurveyor() {
+                this.tempDate = ''
+
+            },
         }
     }
 </script>
@@ -150,7 +189,7 @@
         text-align: left;
     }
 
-    #modalWindow{
+    .modalWindow{
         display: flex;
         flex-direction: column;
         align-items: center;
