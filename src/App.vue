@@ -15,7 +15,7 @@
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 import TaskCalendar from "@/components/TaskCalendar";
-
+// import Eureka from 'eureka-js-client';
 export default {
   name: 'App',
   components: {

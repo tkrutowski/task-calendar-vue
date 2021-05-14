@@ -36,6 +36,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"
@@ -69,6 +70,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"
@@ -102,6 +104,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"
@@ -135,6 +138,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"
@@ -168,6 +172,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"
@@ -201,6 +206,7 @@
                                                     <div v-if="calendarEntry.taskType === 'GAS_CONNECTION'">
 
                                                         <GasConnectionCalendarEntry
+                                                                :id-entry="calendarEntry.idEntry"
                                                                 :address="calendarEntry.address"
                                                                 :cabinet="calendarEntry.gasCabinetProvider"
                                                                 :msg="calendarEntry.message"

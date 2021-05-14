@@ -91,12 +91,14 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         components: {
         },
         name: "GasConnectionCalendarEntry",
         props: {
-
+            idEntry: Number,
             msg: String,
             taskNo: String,
             address: String,
@@ -113,6 +115,45 @@
             tempInfo: String
         },
         methods:{
+            putCustomer() {
+                console.log("putCustomer() - start");
+                axios.put(`http://localhost:8080/api/taskcalendar/change_status/customer/`+ this.idEntry+`?date=` + this.mailCustomerDate+'&status='+this.mailStatusCustomer)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        let temp = response.data;
+                        console.log("putCustomer() - Success: " + temp);
+                        //this.getTeams();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
+            putSurveyor() {
+                console.log("putSurveyor() - start");
+                axios.put(`http://localhost:8080/api/taskcalendar/change_status/surveyor/`+ this.idEntry+`?date=` + this.mailSurveyorDate+'&status='+this.mailStatusSurveyor)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        let temp = response.data;
+                        console.log("putSurveyor() - Success: " + temp);
+                        //this.getTeams();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
+            putPgn() {
+                console.log("putPgn() - start");
+                axios.put(`http://localhost:8080/api/taskcalendar/change_status/pgn/`+ this.idEntry+`?date=` + this.mailPgnDate+'&status='+this.mailStatusPgn)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        let temp = response.data;
+                        console.log("putPgn() - Success: " + temp);
+                        //this.getTeams();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
             checkCustomer(){
                 let isMail=false;
                 if(this.mailStatusCustomer === "SENT"){
@@ -141,8 +182,9 @@
             },
             assignValueCustomer() {
                 this.mailCustomerDate = this.tempDate
-                this.tempDate != '' ? this.mailStatusCustomer = "SENT" :  this.mailStatusCustomer = ''
-                //TODO zapis do bazy
+                this.tempDate != '' ? this.mailStatusCustomer = "SENT" :  this.mailStatusCustomer = 'NOT_SEND'
+                //zapis do bazy
+                this.putCustomer();
             },
             clearModalCustomer() {
                 this.tempDate = ''
@@ -154,6 +196,7 @@
             assignValueInfo() {
                 this.msg = this.tempInfo
                 //TODO zapis do bazy
+
             },
             //SURVEYOR
             resetIfNullSurveyor() {
@@ -161,8 +204,9 @@
             },
             assignValueSurveyor() {
                 this.mailSurveyorDate = this.tempDate
-                this.tempDate != '' ? this.mailStatusSurveyor = "SENT" :  this.mailStatusSurveyor = ''
-                //TODO zapis do bazy
+                this.tempDate != '' ? this.mailStatusSurveyor = "SENT" :  this.mailStatusSurveyor = 'NOT_SEND'
+                //zapis do bazy
+                this.putSurveyor();
             },
             clearModalSurveyor() {
                 this.tempDate = ''
@@ -173,8 +217,9 @@
             },
             assignValuePgn() {
                 this.mailPgnDate = this.tempDate
-                this.tempDate != '' ? this.mailStatusPgn = "SENT" :  this.mailStatusPgn = ''
-                //TODO zapis do bazy
+                this.tempDate != '' ? this.mailStatusPgn = "SENT" :  this.mailStatusPgn = 'NOT_SEND'
+                //zapis do bazy
+                this.putPgn()
             },
             clearModalPgn() {
                 this.tempDate = ''
