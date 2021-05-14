@@ -1,15 +1,19 @@
 <template>
     <div id="container" class="container-fluid ">
         <div id="title" >
-            <h6 align="center" style="padding-top: 10px"><strong>PRZYLĄCZE</strong></h6>
-            <h6><strong>Nr zad.:</strong> {{taskNo}}</h6>
+            <h6  align="center" style="padding-top: 10px"><strong>PRZYLĄCZE</strong></h6>
+<!--            <h6 class="subText"><strong>Nr zad.:</strong> {{taskNo}}</h6>-->
+            <span class="mainText" ><strong>Nr zad.: </strong></span>
+            <span class="subText" >{{taskNo}}</span>
         </div>
+
         <div id="address">
-            <p style="margin-bottom: 0"><strong>Adres:</strong></p>
-            <p style="margin-bottom: 8px">{{address}}</p>
+            <p class="mainText" ><strong>Adres:</strong></p>
+            <p class="subText" >{{address}}</p>
         </div>
         <div id="cabinet">
-            <span style="margin-bottom: 0"><strong>Szafa: </strong>{{cabinet}}</span>
+            <span class="mainText" style="margin-bottom: 0"><strong>Szafa: </strong></span>
+            <span class="subText" style="margin-bottom: 0">{{cabinet}}</span>
 <!--            <b-button v-b-toggle.collapse-3 class="m-1">...</b-button>-->
         </div>
         <div id="msg">
@@ -22,15 +26,15 @@
             <b-collapse visible id="collapse-3">
                 <b-card no-body style="color: black; padding: .30rem" >
                         Powiadomienia:
-                    <div  v-b-modal="'customer'+taskNo" id="customer" class="notification " :style="checkCustomer() ? {'background-color':'green'} :{'background-color':'red'} ">
+                    <div  v-b-modal="'customer'+taskNo" id="customer" class="notification " :style="checkCustomer() ? {'background-color':'rgba(0,255,0,0.8)'} :{'background-color':'rgb(154,154,154)'} ">
                         <h6>Klient: </h6><h6>{{mailCustomerDate}}</h6>
                     </div>
 
-                    <div v-b-modal="'surveyor'+taskNo" id="surveyor" class="notification " :style="checkSurveyor() ? {'background-color':'green'} :{'background-color':'red'} ">
+                    <div v-b-modal="'surveyor'+taskNo" id="surveyor" class="notification " :style="checkSurveyor() ? {'background-color':'rgba(0,255,0,0.8)'} :{'background-color':'rgb(154,154,154)'} ">
                         <h6>Geodeda: </h6><h6>{{mailSurveyorDate}}</h6>
                     </div>
 
-                    <div v-b-modal="'pgn'+taskNo"  v-if="isPgn" id="pgn" class="notification " :style="checkPgn() ? {'background-color':'green'} :{'background-color':'red'} ">
+                    <div v-b-modal="'pgn'+taskNo"  v-if="isPgn" id="pgn" class="notification " :style="checkPgn() ? {'background-color':'rgba(0,255,0,0.8)'} :{'background-color':'rgb(154,154,154)'} ">
                         <h6>PGN: </h6><h6>{{mailPgnDate}}</h6>
                     </div>
                 </b-card>
@@ -195,7 +199,9 @@
     /*border-radius: 10px;*/
     padding-bottom: 10px;
     margin-bottom: 10px;
-    background-color: rgba(97,93,92,0.8);
+    background-color: rgba(47,47,47,0.8);
+    /*background-color: rgba(97,93,92,0.8);*/
+    /*border: 0.1px solid rgba(255,245,0,0.8);*/
     color: rgba(255,245,0,0.8);
 
 }
@@ -216,5 +222,15 @@
         align-items: center;
         padding-top: 10px;
         /*align-content: center;*/
+    }
+
+    .mainText{
+        color: rgb(225,225,225);
+        padding-top: 10px;
+        margin: 0px 0px 0px 0px;
+    }
+
+    .subText{
+        color: rgb(154,154,154);
     }
 </style>

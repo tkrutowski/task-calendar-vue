@@ -1,9 +1,9 @@
 <template>
     <div>
-        <b-container fluid="" id="title">
+        <b-container fluid="" id="container">
             <h1>Kalendarz zadań</h1>
-            <b-form-input placeholder="Enter your name"></b-form-input>
-            <h2>Przełączanie daty</h2>
+<!--            <h2>Przełączanie daty</h2>-->
+            <hr style="border: 0px; background: rgba(255,245,0,0.8); height: 1px;">
             <b-container id="dateSwitch">
                 <b-row align-h="center">
                     <b-button class="mr-3" @click="prevDate">Poprzednia</b-button>
@@ -18,18 +18,16 @@
                 </li>
             </ul>
             <br>
-            <br>
-            <br>
             <div v-for="team in allTeams" :key="team.idTeam">
                 <br>
                 <b-btn v-b-toggle="'team'+team.idTeam">{{team.name}}</b-btn>
 
                 <b-collapse :id="'team'+team.idTeam" visible>
-                    <b-card>
-                        <div class="container-fluid">
-                            <div class="row">
+                    <b-card class="card">
+                        <div class="container-fluid" >
+                            <div class="row" >
                                 <div class="col-2 odd">
-                                    <p>Poniedziałek - {{monday}}</p>
+                                    <p class="dayOfWeek">Poniedziałek - {{monday}}</p>
 
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
@@ -63,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2 even">
-                                    <p>Wtorek - {{tuesday}}</p>
+                                    <p class="dayOfWeek">Wtorek - {{tuesday}}</p>
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
                                             <div v-if="weekDay(calendarEntry.date) === 'wtorek'">
@@ -96,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2 odd">
-                                    <p>Środa - {{wednesday}}</p>
+                                    <p class="dayOfWeek">Środa - {{wednesday}}</p>
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
                                             <div v-if="weekDay(calendarEntry.date) === 'środa'">
@@ -129,7 +127,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2 even">
-                                    <p>Czwartek - {{thursday}}</p>
+                                    <p class="dayOfWeek">Czwartek - {{thursday}}</p>
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
                                             <div v-if="weekDay(calendarEntry.date) === 'czwartek'">
@@ -162,7 +160,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2 odd">
-                                    <p>Piątek - {{friday}}</p>
+                                    <p class="dayOfWeek">Piątek - {{friday}}</p>
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
                                             <div v-if="weekDay(calendarEntry.date) === 'piątek'">
@@ -195,7 +193,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2 even">
-                                    <p>Sobota - {{saturday}}</p>
+                                    <p class="dayOfWeek">Sobota - {{saturday}}</p>
                                     <div v-if="calendarEntries && calendarEntries.length">
                                         <div v-for="calendarEntry of calendarEntries" :key="calendarEntry.id">
                                             <div v-if="weekDay(calendarEntry.date) === 'sobota'">
@@ -414,19 +412,35 @@
 </script>
 
 <style scoped>
-    #title {
+    #container {
         align-content: center;
+        color: rgba(255,245,0,0.8);
+        margin-top: 50px;
     }
 
     .odd {
-        background-color: #FFFFE0;
+        /*background-color: #FFFFE0;*/
+        /*border-color: darkorange;*/
+        border-right: 1px solid rgba(255,245,0,0.8);
+        background-color: rgba(29,29,29);
     }
 
     .even {
-        background-color: #B0E0E6;
+        /*background-color: #B0E0E6;*/
+        background-color: rgb(29,29,29);
+        /*border-color: darkorange;*/
+        border-right: 1px solid rgba(255,245,0,0.8);
     }
 
     #dateSwitch {
         flex-direction: column;
+        margin-top: 50px;
+    }
+    .card{
+        background-color: black;
+    }
+
+    .dayOfWeek{
+        margin-top: 10px;
     }
 </style>
