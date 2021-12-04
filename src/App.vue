@@ -8,19 +8,22 @@
 <h1 id="name">ProgasOffice</h1>
     </div>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-    <TaskCalendar/>
+<!--    <TaskCalendar/>-->
+      <CalculateSalary/>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import TaskCalendar from "@/components/TaskCalendar";
+// import TaskCalendar from "@/components/TaskCalendar";
+import CalculateSalary from "@/components/hr/CalculateSalary";
 // import Eureka from 'eureka-js-client';
 export default {
   name: 'App',
   components: {
     // HelloWorld,
-    TaskCalendar
+    // TaskCalendar,
+      CalculateSalary
   }
 }
 </script>
