@@ -9,21 +9,29 @@
     </div>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--    <TaskCalendar/>-->
-      <CalculateSalary/>
+<!--      <router-view />-->
+<!--      <HrMain/>-->
+      <AddWorkTime/>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 // import TaskCalendar from "@/components/TaskCalendar";
-import CalculateSalary from "@/components/hr/CalculateSalary";
+// import CalculateSalary from "@/components/hr/CalculateSalary";
 // import Eureka from 'eureka-js-client';
+//import HrMain from "@/components/hr/HrMain";
+import AddWorkTime from "@/components/hr/AddWorkTime";
+
+// import HrMain from "@/components/hr/HrMain";
 export default {
   name: 'App',
   components: {
+      // HrMain
     // HelloWorld,
     // TaskCalendar,
-      CalculateSalary
+    //   CalculateSalary
+     AddWorkTime
   }
 }
 </script>
