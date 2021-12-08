@@ -16,7 +16,7 @@
                         <div>
 
                             <label class="form-label" for="employeeSelect">Wybierz pracownika: </label>
-                            <b-form-select v-model="selected" :options="options" class="mb-3" id="employeeSelect">
+                            <b-form-select v-model="selectedEmployee" :options="optionsEmployee" class="mb-3" id="employeeSelect">
                                 <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
                                     <b-form-select-option :value="null" disabled>-- Wybierz pracownika --
@@ -45,7 +45,7 @@
                             <!--                            PRACA-->
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="rbWork" @click="rbWork_click">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="rbWork" checked @click="rbWork_click">
                                     <label class="form-check-label" for="rbWork">
                                         Praca
                                     </label>
@@ -88,11 +88,25 @@
                             <!--                            URLOP-->
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="rbDayOff" @click="rbDayOff_click" >
+                                    <input class="form-check-input" type="radio"
+                                           name="flexRadioDefault"
+                                           id="rbDayOff"
+                                           @click="rbDayOff_click" >
                                     <label class="form-check-label" for="rbDayOff">
                                         Urlop
                                     </label>
                                 </div>
+                                <div>
+                                    <label class="form-label" for="dayOffTypeSelect">Wybierz rodzaj urlopu: </label>
+                                    <b-form-select v-model="selectedDayOffType" :options="optionDayOff" class="mb-3"   id="dayOffTypeSelect">
+                                        <!-- This slot appears above the options from 'options' prop -->
+                                        <template #first>
+                                            <b-form-select-option :value="null" disabled>-- Wybierz rodzaj urlopu --
+                                            </b-form-select-option>
+                                        </template>
+                                    </b-form-select>
+                                </div>
+                                <p>{{selectedDayOffType}}</p>
                             </div>
                             <!--                            CHOROBA-->
                             <div>
@@ -105,7 +119,7 @@
                             </div>
                         </div>
                         <a class="btn btn-warning form-button" @click="addWorkTime">Dodaj</a>
-                        <div class="mt-3">Selected: <strong>{{ selected }}</strong></div>
+                        <div class="mt-3">Selected: <strong>{{ selectedEmployee }}</strong></div>
                         <div class="mt-3">Selected: <strong>data : {{ workTimeDate }}</strong></div>
                         <div class="mt-3">Selected: <strong>data string : {{ workTimeDateString }}</strong></div>
 
@@ -135,7 +149,8 @@
         data() {
             return {
                 employees: [],
-                options: [],
+                dayOffTypes: [],
+                optionsEmployee: [],
                 workTimeDateString: '',
                 workTimeDate: moment(),
                 errors: [],
@@ -144,9 +159,11 @@
                 isWork: true,
                 isDayOff: false,
                 isIllness: false,
+                optionDayOff: [],
 
 
-                selected: '',
+                selectedEmployee: '',
+                selectedDayOffType:'',
                 months: [{value: '01', text: 'styczeń'}, {value: '02', text: 'luty'}, {
                     value: '03',
                     text: 'marzec'
@@ -166,6 +183,7 @@
         },
         created() {
             this.getEmployeesFromDb();
+            this.getDayOffTypesFromDb();
             moment.locale('pl');
             // this.workTimeDate = new Date();
             this.workTimeDateString = this.workTimeDate.format('YYYY-MM-DD');
@@ -204,7 +222,25 @@
                         this.employees = response.data;
                         console.log("getEmployeesFromDb() - Ilosc employees[]: " + this.employees.length);
                         if (this.employees.length > 0) {
-                            this.convertToOptions();
+                            this.convertToOptionsEmployee();
+                        }
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+
+            },
+            getDayOffTypesFromDb() {
+                console.log("getDayOffTypesFromDb() - start");
+                // axios.get(`http://77.55.210.35:9090/api/teams`)
+                // axios.get(`http://localhost:9090/api/teams`)
+                axios.get(`http://192.168.1.10:8082/api/worktime/dayofftype`)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        this.dayOffTypes = response.data;
+                        console.log("getDayOffTypesFromDb() - Ilosc dayOffTypes[]: " + this.dayOffTypes.length);
+                        if (this.dayOffTypes.length > 0) {
+                            this.convertToOptionsDayOff();
                         }
                     })
                     .catch(e => {
@@ -243,15 +279,27 @@
                 this.workTimeDateString = this.workTimeDate.format('YYYY-MM-DD');
 
             },
-            convertToOptions() {
+            convertToOptionsEmployee() {
                 console.log("convert to options...");
                 this.employees.forEach((e) => {
                     let opt = {
                         value: e.id,
                         text: e.lastName + " " + e.firstName
                     }
-                    this.options.push(opt)
+                    this.optionsEmployee.push(opt)
                     console.log(e.id + " " + e.lastName);
+
+                })
+            },
+            convertToOptionsDayOff() {
+                console.log("convert to options...");
+                this.dayOffTypes.forEach((e) => {
+                    let opt = {
+                        value: e.id,
+                        text: e.name
+                    }
+                    this.optionDayOff.push(opt)
+                    console.log(e.id + " " + e.name);
 
                 })
             }
