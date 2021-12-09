@@ -116,6 +116,18 @@
                                         Choroba
                                     </label>
                                 </div>
+                                <div>
+                                    <label class="form-label" for="illnessTypeSelect">Wybierz rodzaj zasiłku: </label>
+                                    <b-form-select v-model="selectedIllnessType" :options="optionIllness" class="mb-3"   id="illnessTypeSelect">
+                                        <!-- This slot appears above the options from 'options' prop -->
+                                        <template #first>
+                                            <b-form-select-option :value="null" disabled>-- Wybierz rodzaj zasiłku --
+                                            </b-form-select-option>
+                                        </template>
+                                    </b-form-select>
+                                </div>
+                                <p>{{selectedIllnessType}}</p>
+
                             </div>
                         </div>
                         <a class="btn btn-warning form-button" @click="addWorkTime">Dodaj</a>
@@ -150,7 +162,8 @@
             return {
                 employees: [],
                 dayOffTypes: [],
-                optionsEmployee: [],
+                illnessTypes:[],
+
                 workTimeDateString: '',
                 workTimeDate: moment(),
                 errors: [],
@@ -160,10 +173,12 @@
                 isDayOff: false,
                 isIllness: false,
                 optionDayOff: [],
-
+                optionsEmployee: [],
+                optionIllness:[],
 
                 selectedEmployee: '',
                 selectedDayOffType:'',
+                selectedIllnessType:'',
                 months: [{value: '01', text: 'styczeń'}, {value: '02', text: 'luty'}, {
                     value: '03',
                     text: 'marzec'
@@ -184,6 +199,7 @@
         created() {
             this.getEmployeesFromDb();
             this.getDayOffTypesFromDb();
+            this.getIllnessTypesFromDb();
             moment.locale('pl');
             // this.workTimeDate = new Date();
             this.workTimeDateString = this.workTimeDate.format('YYYY-MM-DD');
@@ -246,7 +262,23 @@
                     .catch(e => {
                         this.errors.push(e)
                     });
-
+            },
+            getIllnessTypesFromDb() {
+                console.log("getIllnessTypesFromDb() - start");
+                // axios.get(`http://77.55.210.35:9090/api/teams`)
+                // axios.get(`http://localhost:9090/api/teams`)
+                axios.get(`http://192.168.1.10:8082/api/worktime/illnesstype`)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        this.illnessTypes = response.data;
+                        console.log("getIllnessTypesFromDb() - Ilosc illnessTypes[]: " + this.illnessTypes.length);
+                        if (this.illnessTypes.length > 0) {
+                            this.convertToOptionsIllness();
+                        }
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
             },
             addWorkTime() {
                 // this.salaryDate = moment().creationData().
@@ -299,6 +331,18 @@
                         text: e.name
                     }
                     this.optionDayOff.push(opt)
+                    console.log(e.id + " " + e.name);
+
+                })
+            },
+            convertToOptionsIllness() {
+                console.log("convert to options...");
+                this.illnessTypes.forEach((e) => {
+                    let opt = {
+                        value: e.id,
+                        text: e.name
+                    }
+                    this.optionIllness.push(opt)
                     console.log(e.id + " " + e.name);
 
                 })
