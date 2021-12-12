@@ -1,145 +1,172 @@
 <template>
-    <div>
+    <div id="main">
         <b-container fluid="" id="container">
             <h1>Obliczanie wypłat</h1>
             <hr style="border: 0px; background: rgba(255,245,0,0.8); height: 1px;">
-            <b-container id="dateSwitch">
-                <b-row align-h="center">
-                    <!--                    <div class="form-div">-->
-                    <!--                        <select class="form-select"  id="employee" required >-->
-                    <!--                            <option v-for="employee in employees" v-bind ="selected" :key="employee.id">{{employee.lastName}} {{employee.firstName}}</option>-->
-                    <!--                        </select>-->
-                    <!--                        <br>-->
-                    <!--                    </div>-->
-
-                    <div>
-                        <div>
-
-                            <label class="form-label" for="employeeSelect">Wybierz pracownika: </label>
-                            <b-form-select v-model="selectedEmployee" :options="optionsEmployee" class="mb-3" id="employeeSelect">
-                                <!-- This slot appears above the options from 'options' prop -->
-                                <template #first>
-                                    <b-form-select-option :value="null" disabled>-- Wybierz pracownika --
-                                    </b-form-select-option>
-                                </template>
-                            </b-form-select>
-                        </div>
-
-                        <div>
-
-                            <label for="date">Wybierz datę:</label>
-                            <b-form-datepicker
-                                    id="date"
-                                    v-model="workTimeDateString"
-                                    locale="pl"
-                                    placeholder="Wybierz datę"
-
-                                    @context="onContext"
-                            >
-                            </b-form-datepicker>
-                            <!--                                                        <b-calendar v-model="tempDate"  locale="pl" block></b-calendar>-->
-                        </div>
+<!--            <b-container>-->
+<!--                <b-col>-->
+                    <b-container id="dateSwitch">
+                        <b-row align-h="center">
+                            <!--                    <div class="form-div">-->
+                            <!--                        <select class="form-select"  id="employee" required >-->
+                            <!--                            <option v-for="employee in employees" v-bind ="selected" :key="employee.id">{{employee.lastName}} {{employee.firstName}}</option>-->
+                            <!--                        </select>-->
+                            <!--                        <br>-->
+                            <!--                    </div>-->
+<b-col>
 
 
-                        <div style="display: flex; justify-content: space-between">
-                            <!--                            PRACA-->
                             <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="rbWork" checked @click="rbWork_click">
-                                    <label class="form-check-label" for="rbWork">
-                                        Praca
-                                    </label>
-                                </div>
-                                <!--                                <b-time v-model="timeFrom" locale="pl"></b-time>-->
-                                <!--                                <b-form-timepicker v-model="value" locale="pl"></b-form-timepicker>-->
                                 <div>
-                                    <label for="workFrom-input">Od:</label>
-                                    <label for="workTo-input">Do:</label>
-                                    <b-input-group class="mb-3">
-                                        <b-form-input
-                                                id="workFrom-input"
-                                                v-model="timeFrom"
-                                                type="time"
-                                                placeholder="HH:mm"
-                                                :readonly="!isWork"
-                                        ></b-form-input>
-<!--                                        <b-input-group-append>-->
-<!--                                            <b-form-timepicker-->
-<!--                                                    v-model="timeFrom"-->
-<!--                                                    button-only-->
-<!--                                                    right-->
-<!--                                                    locale="pl"-->
-<!--                                                    aria-controls="workFrom-input"-->
-<!--                                            ></b-form-timepicker>-->
-<!--                                        </b-input-group-append>-->
-                                        <b-form-input
-                                                id="workTo-input"
-                                                v-model="timeTo"
-                                                type="time"
-                                                placeholder="HH:mm"
-                                                :readonly="!isWork"
-                                        ></b-form-input>
-                                    </b-input-group>
-                                    <p>Value: '{{ timeFrom }}'</p>
 
-                                </div>
-                                <p>{{timeFrom}}</p>
-                            </div>
-                            <!--                            URLOP-->
-                            <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                           name="flexRadioDefault"
-                                           id="rbDayOff"
-                                           @click="rbDayOff_click" >
-                                    <label class="form-check-label" for="rbDayOff">
-                                        Urlop
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="form-label" for="dayOffTypeSelect">Wybierz rodzaj urlopu: </label>
-                                    <b-form-select v-model="selectedDayOffType" :options="optionDayOff" class="mb-3"   id="dayOffTypeSelect">
+                                    <label class="form-label" for="employeeSelect">Wybierz pracownika: </label>
+                                    <b-form-select v-model="selectedEmployee" :options="optionsEmployee" class="mb-3"
+                                                   id="employeeSelect"
+                                                   @change="onEmployeeChange"
+                                    >
                                         <!-- This slot appears above the options from 'options' prop -->
                                         <template #first>
-                                            <b-form-select-option :value="null" disabled>-- Wybierz rodzaj urlopu --
+                                            <b-form-select-option :value="null" disabled>-- Wybierz pracownika --
                                             </b-form-select-option>
                                         </template>
                                     </b-form-select>
                                 </div>
-                                <p>{{selectedDayOffType}}</p>
-                            </div>
-                            <!--                            CHOROBA-->
-                            <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="rbIllness" @click="rbIllness_click" >
-                                    <label class="form-check-label" for="rbIllness">
-                                        Choroba
-                                    </label>
-                                </div>
+
                                 <div>
-                                    <label class="form-label" for="illnessTypeSelect">Wybierz rodzaj zasiłku: </label>
-                                    <b-form-select v-model="selectedIllnessType" :options="optionIllness" class="mb-3"   id="illnessTypeSelect">
-                                        <!-- This slot appears above the options from 'options' prop -->
-                                        <template #first>
-                                            <b-form-select-option :value="null" disabled>-- Wybierz rodzaj zasiłku --
-                                            </b-form-select-option>
-                                        </template>
-                                    </b-form-select>
+
+                                    <label for="date">Wybierz datę:</label>
+                                    <b-form-datepicker
+                                            id="date"
+                                            v-model="workTimeDateString"
+                                            locale="pl"
+                                            placeholder="Wybierz datę"
+
+                                            @context="onContext"
+                                    >
+                                    </b-form-datepicker>
+                                    <!--                                                        <b-calendar v-model="tempDate"  locale="pl" block></b-calendar>-->
                                 </div>
-                                <p>{{selectedIllnessType}}</p>
+
+
+                                <div style="display: flex; justify-content: space-between">
+                                    <!--                            PRACA-->
+                                    <div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                   id="rbWork" checked @click="rbWork_click">
+                                            <label class="form-check-label" for="rbWork">
+                                                Praca
+                                            </label>
+                                        </div>
+                                        <!--                                <b-time v-model="timeFrom" locale="pl"></b-time>-->
+                                        <!--                                <b-form-timepicker v-model="value" locale="pl"></b-form-timepicker>-->
+                                        <div>
+                                            <label for="workFrom-input">Od:</label>
+                                            <label for="workTo-input">Do:</label>
+                                            <b-input-group class="mb-3">
+                                                <b-form-input
+                                                        id="workFrom-input"
+                                                        v-model="timeFrom"
+                                                        type="time"
+                                                        placeholder="HH:mm"
+                                                        :readonly="!isWork"
+                                                ></b-form-input>
+                                                <!--                                        <b-input-group-append>-->
+                                                <!--                                            <b-form-timepicker-->
+                                                <!--                                                    v-model="timeFrom"-->
+                                                <!--                                                    button-only-->
+                                                <!--                                                    right-->
+                                                <!--                                                    locale="pl"-->
+                                                <!--                                                    aria-controls="workFrom-input"-->
+                                                <!--                                            ></b-form-timepicker>-->
+                                                <!--                                        </b-input-group-append>-->
+                                                <b-form-input
+                                                        id="workTo-input"
+                                                        v-model="timeTo"
+                                                        type="time"
+                                                        placeholder="HH:mm"
+                                                        :readonly="!isWork"
+                                                ></b-form-input>
+                                            </b-input-group>
+                                            <p>Value: '{{ timeFrom }}'</p>
+
+                                        </div>
+                                        <p>{{timeFrom}}</p>
+                                    </div>
+                                    <!--                            URLOP-->
+                                    <div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio"
+                                                   name="flexRadioDefault"
+                                                   id="rbDayOff"
+                                                   @click="rbDayOff_click">
+                                            <label class="form-check-label" for="rbDayOff">
+                                                Urlop
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="form-label" for="dayOffTypeSelect">Wybierz rodzaj
+                                                urlopu: </label>
+                                            <b-form-select v-model="selectedDayOffType" :options="optionDayOff"
+                                                           class="mb-3" id="dayOffTypeSelect">
+                                                <!-- This slot appears above the options from 'options' prop -->
+                                                <template #first>
+                                                    <b-form-select-option :value="null" disabled>-- Wybierz rodzaj
+                                                        urlopu --
+                                                    </b-form-select-option>
+                                                </template>
+                                            </b-form-select>
+                                        </div>
+                                        <p>{{selectedDayOffType}}</p>
+                                    </div>
+                                    <!--                            CHOROBA-->
+                                    <div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                   id="rbIllness" @click="rbIllness_click">
+                                            <label class="form-check-label" for="rbIllness">
+                                                Choroba
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="form-label" for="illnessTypeSelect">Wybierz rodzaj
+                                                zasiłku: </label>
+                                            <b-form-select v-model="selectedIllnessType" :options="optionIllness"
+                                                           class="mb-3" id="illnessTypeSelect">
+                                                <!-- This slot appears above the options from 'options' prop -->
+                                                <template #first>
+                                                    <b-form-select-option :value="null" disabled>-- Wybierz rodzaj
+                                                        zasiłku --
+                                                    </b-form-select-option>
+                                                </template>
+                                            </b-form-select>
+                                        </div>
+                                        <p>{{selectedIllnessType}}</p>
+
+                                    </div>
+                                </div>
+                                <a class="btn btn-warning form-button" @click="addWorkTime">Dodaj</a>
+                                <div class="mt-3">Selected: <strong>{{ selectedEmployee }}</strong></div>
+                                <div class="mt-3">Selected: <strong>data : {{ workTimeDate }}</strong></div>
+                                <div class="mt-3">Selected: <strong>data string : {{ workTimeDateString }}</strong>
+                                </div>
 
                             </div>
-                        </div>
-                        <a class="btn btn-warning form-button" @click="addWorkTime">Dodaj</a>
-                        <div class="mt-3">Selected: <strong>{{ selectedEmployee }}</strong></div>
-                        <div class="mt-3">Selected: <strong>data : {{ workTimeDate }}</strong></div>
-                        <div class="mt-3">Selected: <strong>data string : {{ workTimeDateString }}</strong></div>
-
+</b-col>
+                        <b-col>
+                    <div >
+                        <b-table striped hover :items="workTimeList" :fields="fields" id="table"></b-table>
                     </div>
-                </b-row>
 
+                        </b-col>
+                        </b-row>
 
-            </b-container>
+                    </b-container>
+
+<!--                </b-col>-->
+<!--                <b-col>-->
+<!--                </b-col>-->
+<!--            </b-container>-->
 
             <ul v-if="errors && errors.length">
                 <li v-for="error of errors" :key="error.ruleId">
@@ -160,9 +187,40 @@
         name: "AddWorkTime",
         data() {
             return {
+                fields: [
+                    {
+                        key: 'date',
+                        label: 'Data'
+                    },
+                    {
+                        key : 'dayOfWeek',
+                        label: 'Dzień tyg.'
+                    },
+                    {
+                        key :'startTime',
+                        label: 'Wejście'
+                    },
+                    {
+                        key :'stopTime',
+                        label: 'Wyjście'
+                    },
+                    {
+                        key :'workTimeAll',
+                        label: 'Ilość godzin'
+                    },
+                    {
+                        key : 'workTime50',
+                        label : 'Ilość godzin 50%'
+                    },
+                    {
+                        key : 'workTime100',
+                        label : 'Ilość godzin 100%'
+                    }
+                    ],
+                workTimeList: [],
                 employees: [],
                 dayOffTypes: [],
-                illnessTypes:[],
+                illnessTypes: [],
 
                 workTimeDateString: '',
                 workTimeDate: moment(),
@@ -174,23 +232,11 @@
                 isIllness: false,
                 optionDayOff: [],
                 optionsEmployee: [],
-                optionIllness:[],
+                optionIllness: [],
 
                 selectedEmployee: '',
-                selectedDayOffType:'',
-                selectedIllnessType:'',
-                months: [{value: '01', text: 'styczeń'}, {value: '02', text: 'luty'}, {
-                    value: '03',
-                    text: 'marzec'
-                }, {value: '04', text: 'kwiecień'}, {value: '05', text: 'maj'}, {value: '06', text: 'czerwiec'}
-                    , {value: '07', text: 'lipiec'}, {value: '08', text: 'sierpień'}, {
-                        value: '09',
-                        text: 'wrzesień'
-                    }, {value: '10', text: 'październik'}, {value: '11', text: 'listopad'}, {
-                        value: '12',
-                        text: 'grudzień'
-                    }],
-                years: [2020, 2021, 2022],
+                selectedDayOffType: '',
+                selectedIllnessType: '',
 
                 month: moment().format('MM'),
                 year: moment().format('YYYY')
@@ -203,23 +249,28 @@
             moment.locale('pl');
             // this.workTimeDate = new Date();
             this.workTimeDateString = this.workTimeDate.format('YYYY-MM-DD');
-            this.isWork=true;
+            this.isWork = true;
+            this.selectedEmployee=1;
+            this.getWorkTimeAll();
         },
         methods: {
-            rbWork_click(){
-                this.isWork=true;
-                this.isIllness=false;
-                this.isDayOff=false;
+            onEmployeeChange(){
+                this.getWorkTimeAll();
             },
-            rbDayOff_click(){
-                this.isDayOff=true;
-                this.isWork=false;
-                this.isIllness=false;
+            rbWork_click() {
+                this.isWork = true;
+                this.isIllness = false;
+                this.isDayOff = false;
             },
-            rbIllness_click(){
-                this.isIllness=true;
-                this.isWork=false;
-                this.isDayOff=false;
+            rbDayOff_click() {
+                this.isDayOff = true;
+                this.isWork = false;
+                this.isIllness = false;
+            },
+            rbIllness_click() {
+                this.isIllness = true;
+                this.isWork = false;
+                this.isDayOff = false;
             },
             onContext(ctx) {
                 // The date formatted in the locale, or the `label-no-date-selected` string
@@ -227,6 +278,7 @@
                 // The following will be an empty string until a valid date is entered
                 this.workTimeDateString = ctx.selectedYMD
                 this.workTimeDate = moment(this.workTimeDateString);
+                this.getWorkTimeAll();
             },
             getEmployeesFromDb() {
                 console.log("getEmployeesFromDb() - start");
@@ -280,8 +332,23 @@
                         this.errors.push(e)
                     });
             },
-            addWorkTime() {
+            getWorkTimeAll() {
                 // this.salaryDate = moment().creationData().
+
+                // let url = "http://localhost:8082/api/worktime/" + this.selectedEmployee + "?date=" + this.workTimeDate.year() + "-" + (this.workTimeDate.month() + 1) + "-01";
+                let url = "http://localhost:8082/api/worktime/" + this.selectedEmployee + "?date=" + this.workTimeDate.format('YYYY-MM-DD');
+                // // axios.get(`http://77.55.210.35:9090/api/teams`)
+                axios.get(url)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        this.workTimeList = response.data;
+                        // console.log(this.salary.toString());
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
+            addWorkTime() {
                 // let url = "http://localhost:8082/api/employee/salary/" + this.selected + "?date=" + this.year + "-" + this.month + "-01";
                 // // axios.get(`http://77.55.210.35:9090/api/teams`)
                 // // axios.get(`http://localhost:9090/api/teams`)
@@ -294,13 +361,16 @@
                 //     .catch(e => {
                 //         this.errors.push(e)
                 //     });
-                if(this.isWork){
+                if (this.isWork) {
                     this.addWork();
                 }
+                //TODO nie dodawać dnia jeżęli jest to ostatni dzień miesiąca
                 this.addCalendarDay();
+
+                this.getWorkTimeAll();
             },
-            addWork(){
-              console.log("add praca: "+this.timeFrom+" - "+this.timeTo);
+            addWork() {
+                console.log("add praca: " + this.timeFrom + " - " + this.timeTo);
             },
             addCalendarDay() {
                 console.log("addWorkTime()");
@@ -354,13 +424,17 @@
 </script>
 
 <style scoped>
-    .main {
+    #main {
         display: flex;
         justify-content: flex-start;
         /*align-content: start;*/
         margin: 10px;
+        color: white;
     }
 
+    #table{
+        color: white;
+    }
     .text {
         margin-right: 5px;
     }
