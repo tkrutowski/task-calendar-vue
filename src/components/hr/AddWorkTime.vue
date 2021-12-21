@@ -1,11 +1,11 @@
 <template>
     <div id="main">
-        <b-container fluid="" id="container">
+        <b-container id="container">
             <h1>Obliczanie wypłat</h1>
             <hr style="border: 0px; background: rgba(255,245,0,0.8); height: 1px;">
 <!--            <b-container>-->
 <!--                <b-col>-->
-                    <b-container id="dateSwitch">
+                    <b-container fluid="sm" id="dateSwitch">
                         <b-row align-h="center">
                             <!--                    <div class="form-div">-->
                             <!--                        <select class="form-select"  id="employee" required >-->
@@ -23,6 +23,7 @@
                                     <b-form-select v-model="selectedEmployee" :options="optionsEmployee" class="mb-3"
                                                    id="employeeSelect"
                                                    @change="onEmployeeChange"
+                                                   required
                                     >
                                         <!-- This slot appears above the options from 'options' prop -->
                                         <template #first>
@@ -215,6 +216,10 @@
                     {
                         key : 'workTime100',
                         label : 'Ilość godzin 100%'
+                    },
+                    {
+                        key : 'isHoliday',
+                        label : 'holiday'
                     }
                     ],
                 workTimeList: [],
@@ -238,8 +243,22 @@
                 selectedDayOffType: '',
                 selectedIllnessType: '',
 
-                month: moment().format('MM'),
-                year: moment().format('YYYY')
+                work:{
+                    "idEmployee": '',
+                    "date": '',
+                    "startTime": '',
+                    "stopTime": ''
+                },
+                illness:{
+                    "idEmployee": '',
+                    "date": '',
+                    "idIllnessType": ''
+                },
+                dayOff:{
+                    "idEmployee": '',
+                    "date": '',
+                    "idDayOffType": ''
+                }
             }
         },
         created() {
@@ -251,6 +270,8 @@
             this.workTimeDateString = this.workTimeDate.format('YYYY-MM-DD');
             this.isWork = true;
             this.selectedEmployee=1;
+            this.selectedDayOffType=2;
+            this.selectedIllnessType=1;
             this.getWorkTimeAll();
         },
         methods: {
@@ -334,7 +355,7 @@
             },
             getWorkTimeAll() {
                 // this.salaryDate = moment().creationData().
-
+                console.log("getWorkTimeAll()");
                 // let url = "http://localhost:8082/api/worktime/" + this.selectedEmployee + "?date=" + this.workTimeDate.year() + "-" + (this.workTimeDate.month() + 1) + "-01";
                 let url = "http://localhost:8082/api/worktime/" + this.selectedEmployee + "?date=" + this.workTimeDate.format('YYYY-MM-DD');
                 // // axios.get(`http://77.55.210.35:9090/api/teams`)
@@ -349,31 +370,76 @@
                     });
             },
             addWorkTime() {
-                // let url = "http://localhost:8082/api/employee/salary/" + this.selected + "?date=" + this.year + "-" + this.month + "-01";
-                // // axios.get(`http://77.55.210.35:9090/api/teams`)
-                // // axios.get(`http://localhost:9090/api/teams`)
-                // axios.get(url)
-                //     .then(response => {
-                //         // JSON responses are automatically parsed.
-                //         this.salary = response.data;
-                //         console.log(this.salary.toString());
-                //     })
-                //     .catch(e => {
-                //         this.errors.push(e)
-                //     });
+
                 if (this.isWork) {
                     this.addWork();
                 }
+                if(this.isIllness)
+                    this.addIllness();
+
+                if(this.isDayOff)
+                    this.addDayOff();
+
                 //TODO nie dodawać dnia jeżęli jest to ostatni dzień miesiąca
                 this.addCalendarDay();
-
-                this.getWorkTimeAll();
             },
             addWork() {
                 console.log("add praca: " + this.timeFrom + " - " + this.timeTo);
+                this.work.idEmployee=this.selectedEmployee;
+                this.work.date= this.workTimeDate.format('YYYY-MM-DD');
+                this.work.startTime=this.timeFrom;
+                this.work.stopTime=this.timeTo;
+                console.log(this.work);
+                let url = "http://localhost:8082/api/worktime?workType=WORK";
+                // // axios.get(`http://77.55.210.35:9090/api/teams`)
+                // // axios.get(`http://localhost:9090/api/teams`)
+                axios.post(url, this.work)
+                    .then(response => {
+                        console.log(response);
+                        this.getWorkTimeAll();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
+            addIllness() {
+                console.log("add illness: " + this.workTimeDate.format('YYYY-MM-DD'));
+                this.illness.idEmployee=this.selectedEmployee;
+                this.illness.date= this.workTimeDate.format('YYYY-MM-DD');
+                this.illness.idIllnessType=this.selectedIllnessType;
+                console.log(this.illness);
+                let url = "http://localhost:8082/api/worktime?workType=ILLNESS";
+                // // axios.get(`http://77.55.210.35:9090/api/teams`)
+                // // axios.get(`http://localhost:9090/api/teams`)
+                axios.post(url, this.illness)
+                    .then(response => {
+                        console.log(response);
+                        this.getWorkTimeAll();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+            },
+            addDayOff() {
+                console.log("add dayOff: " + this.workTimeDate.format('YYYY-MM-DD'));
+                this.dayOff.idEmployee=this.selectedEmployee;
+                this.dayOff.date= this.workTimeDate.format('YYYY-MM-DD');
+                this.dayOff.idDayOffType=this.selectedDayOffType;
+                console.log(this.dayOff);
+                let url = "http://localhost:8082/api/worktime?workType=DAY_OFF";
+                // // axios.get(`http://77.55.210.35:9090/api/teams`)
+                // // axios.get(`http://localhost:9090/api/teams`)
+                axios.post(url, this.dayOff)
+                    .then(response => {
+                        console.log(response);
+                        this.getWorkTimeAll();
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
             },
             addCalendarDay() {
-                console.log("addWorkTime()");
+                console.log("addCalendarDay()");
                 console.log("przed dodaniem dnia: " + this.workTimeDate.format('YYYY-MM-DD'));
                 this.workTimeDate.add(1, 'day'); // setDate(day+1);
                 console.log("po dodaniu dnia: " + this.workTimeDate.format('YYYY-MM-DD'));
