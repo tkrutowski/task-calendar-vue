@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import CalculateSalary from "@/components/hr/CalculateSalary";
+// import CalculateSalary from "@/components/hr/CalculateSalary";
+import HrCalculateSalaryView from "@/views/HrCalculateSalaryView";
 import AddWorkTime from "@/components/hr/AddWorkTime";
-import HrMain from "@/views/HrMain";
+import HrMain from "@/views/HrCalculateSalaryView";
 import Home from "@/views/Home";
 
 Vue.use(Router);
@@ -24,7 +25,7 @@ const RouterVue = new Router({
         {
             path: '/hr/CalculateSalary',
             name: 'CalculateSalary',
-            component: CalculateSalary,
+            component: HrCalculateSalaryView,
             props: true
         },
         {
